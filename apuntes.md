@@ -121,3 +121,69 @@ border = cv.Canny(img, 100, 200)
 #imágen de input, valores variables entre 0 y 255
 ```
 
+## Morphologyex
+
+Transformaciones morfológicas 
+
+<img src="https://docs.opencv.org/4.5.2/j.png" alt="j.png" style="zoom:50%;" />
+
+1. Erosión
+
+   ```python
+   erosion = cv.erode(img,kernel,iterations = 1)
+   ```
+
+   <img src="https://docs.opencv.org/4.5.2/erosion.png" alt="erosion.png" style="zoom:50%;" />
+
+2. Dilatación
+
+   ```python
+   dilation = cv.dilate(img,kernel,iterations = 1)
+   ```
+
+   <img src="https://docs.opencv.org/4.5.2/dilation.png" alt="dilation.png" style="zoom:50%;" />
+
+3. Apertura
+
+   ​	Si hay punticos o pequeño ruido, **fuera** de la imágen principal. Lo elimina
+
+   ```python
+   opening = cv.morphologyEx(img, cv.MORPH_OPEN, kernel)
+   ```
+
+   <img src="https://docs.opencv.org/4.5.2/opening.png" alt="opening.png" style="zoom:50%;" />
+
+4. Clausura
+
+   ​	Elimina el ruido **dentro** de la imágen principal.
+
+   ```python
+   closing = cv.morphologyEx(img, cv.MORPH_CLOSE, kernel)
+   ```
+
+   <img src="https://docs.opencv.org/4.5.2/closing.png" alt="closing.png" style="zoom:50%;" />
+
+5. Gradiente morfológico
+
+   ```python
+   gradient = cv.morphologyEx(img, cv.MORPH_GRADIENT, kernel)
+   ```
+
+   <img src="https://docs.opencv.org/4.5.2/gradient.png" alt="gradient.png" style="zoom:50%;" />
+
+6. Top Hat
+
+   ```python
+   tophat = cv.morphologyEx(img, cv.MORPH_TOPHAT, kernel)
+   ```
+
+   <img src="https://docs.opencv.org/4.5.2/tophat.png" alt="tophat.png" style="zoom:50%;" />
+
+7. Black Hat
+
+   ```python
+   blackhat = cv.morphologyEx(img, cv.MORPH_BLACKHAT, kernel)
+   ```
+
+   <img src="https://docs.opencv.org/4.5.2/blackhat.png" alt="blackhat.png" style="zoom:50%;" />
+
