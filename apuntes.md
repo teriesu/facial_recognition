@@ -1,3 +1,7 @@
+
+
+
+
 # From zero to Facial recognition with OpenCv
 
 ## Representación de imágenes
@@ -187,3 +191,125 @@ Transformaciones morfológicas
 
    <img src="https://docs.opencv.org/4.5.2/blackhat.png" alt="blackhat.png" style="zoom:50%;" />
 
+## Contour features
+
+### 2. Area del contorno
+
+```python
+area = cv.contourArea(cnt)
+```
+
+### 3. Perimetro del contorno
+
+```python
+perimeter = cv.arcLength(cnt,True)
+#El segundo parametro es True or False dependiendeo si es un contorno cerrado o no (respectivamente)
+```
+
+### 4. Aproximación del contorno
+
+En esto, el segundo argumento se llama épsilon, que es la distancia máxima desde el contorno al contorno aproximado. Es un parámetro de precisión. Se necesita una adecuada selección de épsilon para obtener la salida correcta. 
+
+```python
+epsilon = 0.1*cv.arcLength(cnt,True)
+approx = cv.approxPolyDP(cnt,epsilon,True)
+```
+
+En la imagen, la línea verde muestra la curva aproximada para épsilon = 10% de la longitud del arco. La tercera imagen muestra lo mismo para épsilon = 1% de la longitud del arco. 
+
+El tercer argumento especifica si la curva está cerrada o no. 
+
+<img src="https://docs.opencv.org/master/approx.jpg" alt="approx.jpg" style="zoom:67%;" />
+
+### 5. Casco convexo 
+
+```python
+hull = cv.convexHull(points[, hull[, clockwise[, returnPoints]]
+```
+
+<img src="https://docs.opencv.org/master/convexitydefects.jpg" alt="convexitydefects.jpg" style="zoom:50%;" />
+
+* **Points:** son los contornos por los que pasamos.
+* **Hull:** es la salida, normalmente lo evitamos.
+* **Clockwise:** bandera de orientación. Si es Verdadero, el casco convexo de salida está orientado en el sentido de las agujas del reloj. De lo contrario, está orientado en sentido antihorario.
+* **returnPoints:** Por defecto, True. Luego devuelve las coordenadas de los puntos del casco. Si es falso, devuelve los índices de los puntos de contorno correspondientes a los puntos del casco. 
+
+Entonces, para obtener un casco convexo como en la imagen de arriba, lo siguiente es suficiente: 
+
+```python
+hull = cv.convexHull(cnt)
+```
+
+### 6. Comprobación de la convexidad 
+
+Existe una función para verificar si una curva es convexa o no, cv.isContourConvex (). Simplemente devuelve si es Verdadero o Falso.
+
+```python
+k = cv.isContourConvex(cnt)
+```
+
+### 7. Rectángulo delimitador 
+
+#### 	7.a Rectángulo delimitador recto
+
+​			Se encuentra mediante la función cv.boundingRect (). Sea (x, y) la coordenada superior izquierda del rectángulo 			y (w, h) su ancho y alto. 
+
+```python
+x,y,w,h = cv.boundingRect(cnt)
+cv.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)	
+```
+
+#### 	7.b Rectángulo girado 
+
+​			Aquí, el rectángulo delimitador se dibuja con un área mínima, por lo que también considera la rotación. La 			función utilizada es cv.minAreaRect (). 
+
+​			Devuelve una estructura Box2D que contiene los siguientes detalles: (centro (x, y), (ancho, alto), ángulo de 			rotación). Pero para dibujar este rectángulo, necesitamos 4 esquinas del rectángulo. 
+
+​			Se obtiene mediante la función cv.boxPoints () 
+
+```python
+rect = cv.minAreaRect(cnt)
+box = cv.boxPoints(rect)
+box = np.int0(box)
+cv.drawContours(img,[box],0,(0,0,255),2)
+```
+
+<img src="https://docs.opencv.org/master/boundingrect.png" alt="boundingrect.png" style="zoom:50%;" />
+
+### 8. Círculo envolvente mínimo 
+
+Encontramos el círculo circunferencial de un objeto usando la función cv.minEnclosingCircle (). Es un círculo que cubre completamente el objeto con un área mínima. 
+
+```python
+(x,y),radius = cv.minEnclosingCircle(cnt)
+center = (int(x),int(y))
+radius = int(radius)
+cv.circle(img,center,radius,(0,255,0),2)
+```
+
+<img src="https://docs.opencv.org/master/circumcircle.png" alt="circumcircle.png" style="zoom:50%;" />
+
+### 9. Fitting an Ellipse
+
+El siguiente es ajustar una elipse a un objeto. Devuelve el rectángulo girado en el que está inscrita la elipse. 
+
+```python
+ellipse = cv.fitEllipse(cnt)
+cv.ellipse(img,ellipse,(0,255,0),2)
+```
+
+<img src="https://docs.opencv.org/master/fitellipse.png" alt="fitellipse.png" style="zoom:50%;" />
+
+### 10. Fitting a Line
+
+De manera similar, podemos ajustar una línea a un conjunto de puntos. La imagen de abajo contiene un conjunto de puntos blancos. Podemos aproximarle una línea recta. 
+
+```python
+rows,cols = img.shape[:2]
+[vx,vy,x,y] = cv.fitLine(cnt, cv.DIST_L2,0,0.01,0.01)
+lefty = int((-x*vy/vx) + y)
+righty = int(((cols-x)*vy/vx)+y)
+cv.line(img,(cols-1,righty),(0,lefty),(0,255,0),2)
+```
+
+<img src="https://docs.opencv.org/master/fitline.jpg" alt="fitline.jpg" style="zoom:67%;" />
