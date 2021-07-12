@@ -19,7 +19,7 @@ def alignment(img, width, height):
     cv2.imshow("Umbral", umbral)
     contours, hierarchy  = cv2.findContours(umbral, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0] #El 0 significa que desde el punto 0
                                                                                                    #Lo centre y aplicamos todo
-    contours = sorted(contours, key = cv2.contourArea, reverse = True)  #Quiero el ordenado del area de los contornos
+    contours = sorted(contours, key = cv2.contourArea, reverse = True)[:1] #Quiero el ordenado del area de los contornos
                                                                         #Ordena los puntos de mayor a menor
     for c in contours:
         epsilon = 0.01 * cv2.arcLength(c, True) #Dato para encontrar las areas (tiene un valor por defecto)
@@ -36,19 +36,19 @@ def alignment(img, width, height):
 videoCapture = cv2.VideoCapture(0)
 
 while True:
-    typeCamera, frame = captureVideo.read() #La primera variable recibe el timpo de camara
+    typeCamera, frame = videoCapture.read() #La primera variable recibe el timpo de camara
     if typeCamera == False:
         break
 
-    a6img = alignment(frame, width = 677 ,height = 480)
+    a6img = alineamiento(frame, ancho = 625 ,alto = 480)#width = 625 ,height = 480)
 
     if a6img is not None:
         points = []
         grayImage = cv2.cvtColor(a6img, cv2.COLOR_RGB2GRAY)
         blur =  cv2.GaussianBlur(grayImage, (5, 5), 1)
-        _, umbral = cv2.threshold(blur, 0, 255,cv2.THRESH_OTSU + cv2.THRESH_BINARY_INV)
-        cv2.imshow('Umbral', umbral)
-        contours, hierarchy  = cv2.findContours(umbral, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+        _, umbral2 = cv2.threshold(blur, 0, 255,cv2.THRESH_OTSU + cv2.THRESH_BINARY_INV)
+        cv2.imshow('Umbral', umbral2)
+        contours, hierarchy  = cv2.findContours(umbral2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
         cv2.drawContours(a6img, contours, -1, (0,0,255), 2)
         suma1 = 0.0
         suma2 = 0.0
@@ -60,5 +60,24 @@ while True:
             x = int(moments["m10"]/moments["m00"]) #Momentos en movimiento/ Momentos estáticos
             y = int(moments["m01"]/moments["m00"])
 
+            if area > 9700 and area < 11000:
+                font = cv2.FONT_HERSHEY_SIMPLEX #Escriba un texto simple
+                cv2.putText(a6img, 'COP $/. 50', (x, y), font, 0.75, (176, 58, 158), 2)
+                suma1 += 50
+
+            if area > 13500 and area < 15500:
+                font = cv2.FONT_HERSHEY_SIMPLEX #Escriba un texto simple
+                cv2.putText(a6img, 'COP $/. 100', (x, y), font, 0.75, (176, 58, 158), 2)
+                suma1 += 100
+
+        total = suma1 + suma2
+        print('suma total = ', total)
+        cv2.imshow('Imagen ', a6img)
+        cv2.imshow('Umbral ', umbral2)
+        cv2.imshow('Camara', frame)
+
     if cv2.waitKey(1) == ord('q'):
         break
+
+videoCapture.release() #Detener captura de video
+cv2.destroyAllWindows()
