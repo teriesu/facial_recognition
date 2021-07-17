@@ -252,7 +252,7 @@ k = cv.isContourConvex(cnt)
 
 #### 	7.a Rectángulo delimitador recto
 
-​			Se encuentra mediante la función cv.boundingRect (). Sea (x, y) la coordenada superior izquierda del rectángulo 			y (w, h) su ancho y alto. 
+​			Se encuentra mediante la función cv.boundingRect (). Sea (x, y) la coordenada superior izquierda del rectángulo y (w, h) su ancho y alto. 
 
 ```python
 x,y,w,h = cv.boundingRect(cnt)
@@ -261,9 +261,9 @@ cv.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
 
 #### 	7.b Rectángulo girado 
 
-​			Aquí, el rectángulo delimitador se dibuja con un área mínima, por lo que también considera la rotación. La 			función utilizada es cv.minAreaRect (). 
+​			Aquí, el rectángulo delimitador se dibuja con un área mínima, por lo que también considera la rotación. La función utilizada es cv.minAreaRect (). 
 
-​			Devuelve una estructura Box2D que contiene los siguientes detalles: (centro (x, y), (ancho, alto), ángulo de 			rotación). Pero para dibujar este rectángulo, necesitamos 4 esquinas del rectángulo. 
+​			Devuelve una estructura Box2D que contiene los siguientes detalles: (centro (x, y), (ancho, alto), ángulo de rotación). Pero para dibujar este rectángulo, necesitamos 4 esquinas del rectángulo. 
 
 ​			Se obtiene mediante la función cv.boxPoints () 
 
@@ -313,3 +313,4 @@ cv.line(img,(cols-1,righty),(0,lefty),(0,255,0),2)
 ```
 
 <img src="https://docs.opencv.org/master/fitline.jpg" alt="fitline.jpg" style="zoom:67%;" />
+
