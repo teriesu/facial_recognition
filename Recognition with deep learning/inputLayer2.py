@@ -4,14 +4,16 @@ import os
 import imutils
 
 #Creacion de carpetas para las imágenes
-model = 'ElternBilder'
+model = 'AuronBilder'
 route1 = 'E:/Estudio/Udemy/Facial recognition/Recognition with deep learning'
 routeComplete = route1 + '/' + model
 if not os.path.exists(routeComplete): # Verificamos la existencia de la ruta
     os.makedirs(routeComplete) #creamos la ruta donde irán las imáges, en caso de no existir
 
+
+
 noise = cv.CascadeClassifier('haarcascade_frontalface_default.xml') #Lee los contornos de ruido
-camera = cv.VideoCapture(0)
+camera = cv.VideoCapture('videoauron.mp4')
 id = 0
 while True:
     response, capture = camera.read()
