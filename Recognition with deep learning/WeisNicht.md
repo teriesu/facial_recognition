@@ -19,13 +19,15 @@ face = noise.detectMultiScale(gray, 1.5, 3)
 #imágen de entrada, reducción de las imágenes(porcentaje[1.5 = 50 %, 1.3 = 30%]), este factor reduce la cantidad de errores (por ej si hay 5 rostros [Se calibra sobre la marcha])
 ```
 
-<img src="C:\Users\User\AppData\Roaming\Typora\typora-user-images\image-20210717123654177.png" alt="image-20210717123654177" style="zoom:30%;" />
+<img src="C:\Users\User\AppData\Roaming\Typora\typora-user-images\image-20210717123654177.png" alt="image-20210717123654177" style="zoom:20%;" />
 
 Para marcar los puntos y líneas, es necesario realizar el recorrido por todos y cada uno de los mismos. Esto se realiza de la siguiente manera:
 
 ```python
 for (x, y, e1, e2) in face: #de iz a der, arriba abajo, esquina superior iz, esquina inferior der
     cv.rectangle(capture, (x, y), (x+e1, y+e2), (61,221,66), 4) #Dibujamos un rectangulo sobre el vídeo
-    												   #donde lo dibuja, Eje X y Y, concatenamos alturas y anchuras, Color, grosor
+    												       #donde lo dibuja, Eje X y Y, concatenamos alturas y anchuras, Color, grosor
 ```
+
+<img src="C:\Users\User\AppData\Roaming\Typora\typora-user-images\image-20210717171220649.png" alt="image-20210717171220649" style="zoom:33%;" />
 
